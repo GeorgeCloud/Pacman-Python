@@ -29,7 +29,7 @@ class GameObject(pygame.sprite.Sprite):
         screen.blit(self.surf, (self.x, self.y))
 
 class Player(GameObject):
-    player_speed = 30
+    player_speed = 50
 
     def __init__(self):
         super(Player, self).__init__(250, 250, 'pacman-art/pacman-right/1.png')
@@ -48,7 +48,7 @@ class Player(GameObject):
 
     def move_right(self):
         self.x += self.player_speed
-        if self.x >= 500:
+        if self.x >= 1000:
             self.x = 0
 
         self.current_direction = 1
@@ -56,13 +56,13 @@ class Player(GameObject):
     def move_up(self):
         self.y -= self.player_speed
         if self.y < 0:
-            self.y = 470
+            self.y = 970
 
         self.current_direction = 2
 
     def move_down(self):
         self.y += self.player_speed
-        if self.y >= 500:
+        if self.y >= 1000:
             self.y = 0
 
         self.current_direction = 3
@@ -84,7 +84,7 @@ class Apple(GameObject):
     def __init__(self):
         super(Apple, self).__init__(0, 0, 'pacman-art/other/apple.png')
         self.dx = 0
-        self.dy = (randint(0, 200) / 100) + 1
+        self.dy = (randint(0, 400) / 200) + 2
         self.reset()
         self.rect = self.surf.get_rect()
 
@@ -92,18 +92,18 @@ class Apple(GameObject):
         self.x += self.dx
         self.y += self.dy
 
-        if self.y > 500:
+        if self.y > 1000:
             self.reset()
 
     def reset(self):
-        self.x = randint(0, 470)
+        self.x = randint(0, 970)
         self.y = -64
 
 
 class Strawberry(GameObject):
     def __init__(self):
         super(Strawberry, self).__init__(0, 0, 'pacman-art/other/strawberry.png')
-        self.dx = (randint(0, 200) / 100) + 1
+        self.dx = (randint(0, 400) / 200) + 2
         self.dy = 0
         self.reset()
 
@@ -111,28 +111,28 @@ class Strawberry(GameObject):
         self.x += self.dx
         self.y += self.dy
 
-        if self.x > 500:
+        if self.x > 1000:
             self.reset()
 
     def reset(self):
         self.x = -64
-        self.y = randint(0, 470)
+        self.y = randint(0, 970)
 
 
 class Ghost(GameObject):
     def __init__(self):
         super(Ghost, self).__init__(0, 0, 'pacman-art/ghosts/inky.png')
         self.dx = 0
-        self.dy = (randint(0, 200) / 100) + 1
+        self.dy = (randint(0, 400) / 200) + 2
         self.reset()
 
     def move(self):
         self.x += self.dx
         self.y += self.dy
 
-        if self.y > 500:
+        if self.y > 1000:
             self.reset()
 
     def reset(self):
-        self.x = randint(0, 470)
-        self.y = -64
+        self.x = randint(0, 970)
+        self.y = -1000

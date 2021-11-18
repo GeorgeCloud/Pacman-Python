@@ -3,7 +3,7 @@ from time import sleep
 from cookie_cutter import Apple, Ghost, Player, Strawberry
 from colors import colors
 
-screen = pygame.display.set_mode([500, 500])
+screen = pygame.display.set_mode([1000, 1000])
 screen.fill(colors['black'])
 
 clock = pygame.time.Clock()
@@ -25,7 +25,7 @@ fruits = []
 fruit_sprites = pygame.sprite.Group()
 every_three_renders = 0
 
-for _ in range(20):
+for _ in range(30):
     if every_three_renders > 1:
         ghost = Ghost()
         ghost_sprites.add(ghost)
@@ -54,7 +54,6 @@ while running:
                 running = False
             elif event.key == pygame.K_LEFT:
                 player.move_left()
-                # player.change_image()
             elif event.key == pygame.K_RIGHT:
                 player.move_right()
             elif event.key == pygame.K_UP:
