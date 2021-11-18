@@ -1,6 +1,6 @@
 import pygame
-from random import randint, shuffle
-from cookie_cutter import GameObject, Apple, Ghost, Player, Strawberry
+from random import randint
+from cookie_cutter import Apple, Ghost, Player, Strawberry
 from colors import colors
 
 def random_coordinates():
@@ -12,7 +12,6 @@ screen.fill(colors['black'])
 
 clock = pygame.time.Clock()
 
-some_apple, some_strawberry = Apple(), Strawberry()
 
 ghost = Ghost()
 
@@ -22,10 +21,16 @@ fruits = []
 
 points = 0
 
+fruit_sprites = pygame.sprite.Group()
+
 for _ in range(3):
-    x, y = random_coordinates()  # Add error collision
-    fruits.append(Apple())
-    fruits.append(Strawberry())
+    some_apple, some_strawberry = Apple(), Strawberry()
+
+    fruit_sprites.add(some_apple)
+    fruit_sprites.add(some_strawberry)
+
+    fruits.append(some_apple)
+    fruits.append(some_strawberry)
 
 running = True
 while running:
@@ -59,16 +64,20 @@ while running:
     ghost.render(screen)
     ghost.move()
 
+    fruit = pygame.sprite.spritecollideany(player, fruit_sprites)
+    if fruit:
+        running = False
+
     # Update the display
     pygame.display.flip()
-    clock.tick(15)
+    clock.tick(240)
 
-pygame.mixer.pre_init(frequency=44100, size=-16, channels=1, buffer=512)
+# pygame.mixer.pre_init(frequency=44100, size=-16, channels=1, buffer=512)
 pygame.init()
 
-pygame.mixer.music.load('eating.mp3')
-pygame.mixer.music.set_volume(0.2)
-pygame.mixer.music.play(5)
+# pygame.mixer.music.load('eating.mp3')
+# pygame.mixer.music.set_volume(0.2)
+# pygame.mixer.music.play(5)
 
 # # Draw a circle
 # starting_position = [100, 100]

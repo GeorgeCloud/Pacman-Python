@@ -17,12 +17,15 @@ class GameObject(pygame.sprite.Sprite):
         self.update_image(image_path)
         self.x = x
         self.y = y
+        self.rect = self.surf.get_rect()
 
     def update_image(self, image_path):
         resized_image = pygame.image.load(image_path)
         self.surf = pygame.transform.scale(resized_image, (30, 30))
 
     def render(self, screen):
+        self.rect.x = self.x
+        self.rect.y = self.y
         screen.blit(self.surf, (self.x, self.y))
 
 class Player(GameObject):
@@ -32,8 +35,10 @@ class Player(GameObject):
         super(Player, self).__init__(250, 250, 'pacman-art/pacman-right/1.png')
         self.x = 250
         self.y = 250
+        self.image_count = 0
         self.current_direction = 1
         self.img_idx = 0
+        self.rect = self.surf.get_rect()
 
     def move_left(self):
         self.x -= self.player_speed
@@ -64,9 +69,15 @@ class Player(GameObject):
         self.current_direction = 3
 
     def render(self, screen):
-        current_direction = facing_positions[self.current_direction]
-        self.update_image(current_direction[self.img_idx])
-        self.img_idx += -2 if self.img_idx == 2 else 1
+        self.image_count += 1
+        if self.image_count > 3:
+            self.image_count = 0
+            current_direction = facing_positions[self.current_direction]
+            self.update_image(current_direction[self.img_idx])
+            self.img_idx += -2 if self.img_idx == 2 else 1
+
+        self.rect.x = self.x
+        self.rect.y = self.y
         screen.blit(self.surf, (self.x, self.y))
 
 
@@ -76,6 +87,7 @@ class Apple(GameObject):
         self.dx = 0
         self.dy = (randint(0, 200) / 100) + 1
         self.reset()
+        self.rect = self.surf.get_rect()
 
     def move(self):
         self.x += self.dx
@@ -95,6 +107,7 @@ class Strawberry(GameObject):
         self.dx = (randint(0, 200) / 100) + 1
         self.dy = 0
         self.reset()
+        self.rect = self.surf.get_rect()
 
     def move(self):
         self.x += self.dx
@@ -114,6 +127,7 @@ class Ghost(GameObject):
         self.dx = 0
         self.dy = (randint(0, 200) / 100) + 1
         self.reset()
+        self.rect = self.surf.get_rect()
 
     def move(self):
         self.x += self.dx
