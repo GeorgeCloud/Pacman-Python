@@ -38,7 +38,6 @@ class Player(GameObject):
         self.image_count = 0
         self.current_direction = 1
         self.img_idx = 0
-        self.rect = self.surf.get_rect()
 
     def move_left(self):
         self.x -= self.player_speed
@@ -107,7 +106,6 @@ class Strawberry(GameObject):
         self.dx = (randint(0, 200) / 100) + 1
         self.dy = 0
         self.reset()
-        self.rect = self.surf.get_rect()
 
     def move(self):
         self.x += self.dx
@@ -127,7 +125,6 @@ class Ghost(GameObject):
         self.dx = 0
         self.dy = (randint(0, 200) / 100) + 1
         self.reset()
-        self.rect = self.surf.get_rect()
 
     def move(self):
         self.x += self.dx

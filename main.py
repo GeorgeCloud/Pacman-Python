@@ -1,7 +1,9 @@
 import pygame
 from random import randint
+from time import sleep
 from cookie_cutter import Apple, Ghost, Player, Strawberry
 from colors import colors
+
 
 def random_coordinates():
     return randint(0, 400), randint(0, 400)
@@ -12,18 +14,30 @@ screen.fill(colors['black'])
 
 clock = pygame.time.Clock()
 
+score = 0
 
-ghost = Ghost()
+pygame.mixer.init()
+eating_sound_effect = pygame.mixer.Sound("eating.mp3")
+died_sound_effect = pygame.mixer.Sound("died.mp3")
+
+eating_sound_effect.play(-1)
 
 player = Player()
 
+all_ghosts = []
+ghost_sprites = pygame.sprite.Group()
+
 fruits = []
-
-points = 0
-
 fruit_sprites = pygame.sprite.Group()
+every_three_renders = 0
 
-for _ in range(3):
+for _ in range(20):
+    if every_three_renders > 3:
+        ghost = Ghost()
+        ghost_sprites.add(ghost)
+        all_ghosts.append(ghost)
+        every_three_renders = 0
+
     some_apple, some_strawberry = Apple(), Strawberry()
 
     fruit_sprites.add(some_apple)
@@ -32,6 +46,9 @@ for _ in range(3):
     fruits.append(some_apple)
     fruits.append(some_strawberry)
 
+    every_three_renders += 1
+
+frame = 0
 running = True
 while running:
     for event in pygame.event.get():
@@ -51,7 +68,6 @@ while running:
             elif event.key == pygame.K_DOWN:
                 player.move_down()
 
-    # Clear the screen
     screen.fill(colors['black'])
 
     print(f'x: {player.x}, y: {player.y}')
@@ -61,23 +77,33 @@ while running:
         item.render(screen)
         item.move()
 
-    ghost.render(screen)
-    ghost.move()
+    for ghost in all_ghosts:
+        ghost.render(screen)
+        ghost.move()
 
     fruit = pygame.sprite.spritecollideany(player, fruit_sprites)
     if fruit:
+        score += 1
+        fruit.reset()
+
+    check_ghost_collision = pygame.sprite.spritecollideany(player, ghost_sprites)
+    if check_ghost_collision:
+        eating_sound_effect.stop()
+        died_sound_effect.play()
+        for _ in range(50):
+            screen.fill(colors['green'])
+            pygame.display.flip()
+            screen.fill(colors['black'])
+            pygame.display.flip()
         running = False
 
-    # Update the display
     pygame.display.flip()
     clock.tick(240)
 
-# pygame.mixer.pre_init(frequency=44100, size=-16, channels=1, buffer=512)
-pygame.init()
+sleep(1.3)
+print("SCORE:", score)
 
-# pygame.mixer.music.load('eating.mp3')
-# pygame.mixer.music.set_volume(0.2)
-# pygame.mixer.music.play(5)
+pygame.init()
 
 # # Draw a circle
 # starting_position = [100, 100]
