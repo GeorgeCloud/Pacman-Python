@@ -1,5 +1,4 @@
 import pygame
-from random import randint
 from time import sleep
 from cookie_cutter import Apple, Ghost, Player, Strawberry
 from colors import colors
@@ -20,14 +19,14 @@ eating_sound_effect.play(-1)
 player = Player()
 
 all_ghosts = []
-fruits = []
 ghost_sprites = pygame.sprite.Group()
-fruit_sprites = pygame.sprite.Group()
 
+fruits = []
+fruit_sprites = pygame.sprite.Group()
 every_three_renders = 0
-# Create list of items to populate screen
+
 for _ in range(20):
-    if every_three_renders > 3:
+    if every_three_renders > 1:
         ghost = Ghost()
         ghost_sprites.add(ghost)
         all_ghosts.append(ghost)
@@ -43,6 +42,7 @@ for _ in range(20):
 
     every_three_renders += 1
 
+frame = 0
 running = True
 while running:
     for event in pygame.event.get():
@@ -54,6 +54,7 @@ while running:
                 running = False
             elif event.key == pygame.K_LEFT:
                 player.move_left()
+                # player.change_image()
             elif event.key == pygame.K_RIGHT:
                 player.move_right()
             elif event.key == pygame.K_UP:
@@ -61,6 +62,7 @@ while running:
             elif event.key == pygame.K_DOWN:
                 player.move_down()
 
+    # Clear the screen
     screen.fill(colors['black'])
 
     player.render(screen)
@@ -82,15 +84,12 @@ while running:
     if check_ghost_collision:
         eating_sound_effect.stop()
         died_sound_effect.play()
-        for _ in range(50):
-            screen.fill(colors['green'])
-            pygame.display.flip()
-            screen.fill(colors['black'])
-            pygame.display.flip()
+        screen.fill(colors['black'])
+        pygame.display.flip()
         running = False
 
     pygame.display.flip()
-    clock.tick(240)
+    clock.tick(120)
 
 sleep(1.3)
 print("SCORE:", score)

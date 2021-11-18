@@ -21,7 +21,7 @@ class GameObject(pygame.sprite.Sprite):
 
     def update_image(self, image_path):
         resized_image = pygame.image.load(image_path)
-        self.surf = pygame.transform.scale(resized_image, (30, 30))
+        self.surf = pygame.transform.scale(resized_image, (40, 40))
 
     def render(self, screen):
         self.rect.x = self.x
