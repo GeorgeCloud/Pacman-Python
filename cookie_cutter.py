@@ -42,7 +42,7 @@ class Player(GameObject):
     def move_left(self):
         self.x -= self.player_speed
         if self.x < 0:
-            self.x = 470
+            self.x = 970
 
         self.current_direction = 0
 
