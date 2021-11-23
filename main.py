@@ -1,18 +1,22 @@
 import pygame
 from time import sleep
 from cookie_cutter import Apple, Ghost, Player, Strawberry
+from scoreboard import ScoreBoard
 from colors import colors
 
 screen = pygame.display.set_mode([1000, 1000])
 screen.fill(colors['black'])
+pygame.font.init()
 
+score = ScoreBoard()
 clock = pygame.time.Clock()
-
-score = 0
 
 pygame.mixer.init()
 eating_sound_effect = pygame.mixer.Sound("eating.mp3")
+eating_sound_effect.set_volume(0.1)
+
 died_sound_effect = pygame.mixer.Sound("died.mp3")
+died_sound_effect.set_volume(0.1)
 
 eating_sound_effect.play(-1)
 
@@ -64,6 +68,7 @@ while running:
     # Clear the screen
     screen.fill(colors['black'])
 
+    score.render(screen)
     player.render(screen)
 
     for item in fruits:
@@ -76,7 +81,7 @@ while running:
 
     fruit = pygame.sprite.spritecollideany(player, fruit_sprites)
     if fruit:
-        score += 1
+        score.update(1)
         fruit.reset()
 
     check_ghost_collision = pygame.sprite.spritecollideany(player, ghost_sprites)
